@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Pac_Man_on_wheels.MenuPage">
+  <AbsoluteLayout>
+  <StackLayout Orientation="Vertical" 
+    Padding="30,20,30,20"
+               HorizontalOptions="CenterAndExpand" 
+               VerticalOptions="CenterAndExpand"
+               AbsoluteLayout.LayoutFlags="All" 
+               AbsoluteLayout.LayoutBounds="0,0,1,1">
+    <Label Text="Overview" TextColor="#111111" FontSize="Large" HorizontalTextAlignment="Center"></Label>
+    <Frame BackgroundColor="#616161" 
+           HasShadow="False">
+      <Grid  RowSpacing="10" ColumnSpacing="10" 
+             HorizontalOptions="CenterAndExpand"
+             VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"></ColumnDefinition>
+          <ColumnDefinition Width="150"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0"
+               FontSize="16"
+               Text="Total earnings:"
+               TextColor="White"></Label>
+        <Label Grid.Row="0" Grid.Column="1" 
+               FontSize="16"
+               Text="{Binding Earnings}"
+               TextColor="White"></Label>
+        <Label Grid.Row="1" Grid.Column="0" 
+               FontSize="16"
+               TextColor="White"
+               Text="What you have eaten so far:"></Label>
+        <Label Grid.Row="1" Grid.Column="1" 
+               FontSize="16"
+               TextColor="White" 
+               Text="{Binding Distance}"></Label>
+      </Grid>
+    </Frame>
+    <Button Margin="0,5,0,10"
+            Command="{Binding RefreshCommand}"
+            Text="Load Car Data" 
+            TextColor="#616161" 
+            FontAttributes="Bold" 
+            FontSize="16" 
+            HorizontalOptions="FillAndExpand" 
+            BackgroundColor="#fdde54" />
+    <Image HorizontalOptions="Center" WidthRequest="400" Source="chart.png"/>
+    <Frame BackgroundColor="#616161" 
+         HasShadow="False">
+      <Grid  RowSpacing="10" ColumnSpacing="10" 
+         HorizontalOptions="CenterAndExpand"
+         VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"></ColumnDefinition>
+          <ColumnDefinition Width="150"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Text="Select your price:" 
+           FontSize="16"
+           TextColor="White"></Label>
+        <Slider Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="Slider" Value="0.5"></Slider>
+        <Label Grid.Row="2" Grid.Column="0" 
+           Text="{Binding Source={x:Reference Slider}, Path=Value, StringFormat='Value is {0} Mi/Km'}" TextColor="White"></Label>
+      </Grid>
+    </Frame>
+    <Button Margin="0,5,0,0"
+            Command="{Binding SaveCommand}"
+            Text="Offer your data" 
+            TextColor="#616161" 
+            FontAttributes="Bold" 
+            FontSize="16" 
+            HorizontalOptions="FillAndExpand" 
+            BackgroundColor="#fdde54" />
+
+  </StackLayout>
+    <StackLayout IsVisible="{Binding IsBusy}" 
+                 AbsoluteLayout.LayoutFlags="All"
+                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                 BackgroundColor="#99000000">
+      <StackLayout VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   BackgroundColor="White"
+                   Padding="30,25,30,25">
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           Color ="#fdde54"/>
+        <Label Text="Loading data..." 
+               AutomationId="AddressLabelId"
+               FontSize="16" 
+               TextColor="Black"/>
+      </StackLayout>
+    </StackLayout>
+  </AbsoluteLayout>
+</ContentPage>

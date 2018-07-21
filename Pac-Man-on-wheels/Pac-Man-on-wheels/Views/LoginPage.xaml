@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Pac_Man_on_wheels.LoginPage">
+    <AbsoluteLayout>
+    <StackLayout Orientation="Vertical" 
+                 Padding="20,15,20,15" Spacing="15" 
+                 HorizontalOptions="CenterAndExpand" 
+                 VerticalOptions="CenterAndExpand"
+                 AbsoluteLayout.LayoutFlags="All" 
+                 AbsoluteLayout.LayoutBounds="0,0,1,1">
+      <Image HorizontalOptions="Center" WidthRequest="200" HeightRequest="200" Source="pacLogo.png"/>
+      <Label Text="Remember your seed and feel free to change the randomly generated seed below for additional security!" TextColor="#576166"></Label>
+        <StackLayout Orientation="Vertical" 
+                     BackgroundColor="#a4a4a4" 
+                     Padding="20" Spacing="10" >
+          <Label Text="Seed " TextColor="White"></Label>
+          <Entry x:Name="RandomSeed" 
+                 AutomationId="RandomSeedId"
+                 IsSpellCheckEnabled="False"
+                 BackgroundColor="#8e8e8e"
+                 Text="{Binding RandomSeed}"   
+                 PlaceholderColor="White" 
+                 HeightRequest="40"   
+                 IsPassword="False"  
+                 TextColor="White"/>
+          <StackLayout Orientation="Horizontal" CompressedLayout.IsHeadless="true">
+            <Label Text="Store seed on your device:" Margin="0,0,5,0" TextColor="White"></Label>
+            <Switch IsToggled="{Binding StoreSeed}" OnColor="White"></Switch>
+          </StackLayout>
+        </StackLayout>
+      <Button Command="{Binding SubmitCommand}"
+              Text="Login" 
+              TextColor="#616161"  
+              FontAttributes="Bold" 
+              FontSize="16" 
+              HorizontalOptions="FillAndExpand"  
+              BackgroundColor="#fdde54" />
+    </StackLayout>
+    <StackLayout IsVisible="{Binding IsBusy}" 
+                 AbsoluteLayout.LayoutFlags="All"
+                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                 BackgroundColor="#99000000">
+      <StackLayout VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   BackgroundColor="White"
+                   Padding="30,25,30,25">
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           Color ="#fdde54"/>
+        <Label Text="Addresses are generated..." 
+               AutomationId="AddressLabelId"
+               FontSize="16" 
+               TextColor="Black"/>
+        </StackLayout>
+    </StackLayout>
+  </AbsoluteLayout>
+
+</ContentPage>
