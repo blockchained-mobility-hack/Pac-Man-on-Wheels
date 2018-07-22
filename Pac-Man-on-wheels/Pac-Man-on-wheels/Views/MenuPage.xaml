@@ -1,7 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:Pac_Man_on_wheels.Services;assembly=Pac-Man-on-wheels"
              x:Class="Pac_Man_on_wheels.MenuPage">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <services:StringToColorConverter x:Key="StringToColorConverter"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
   <AbsoluteLayout>
   <StackLayout Orientation="Vertical" 
     Padding="30,20,30,20"
@@ -12,12 +18,12 @@
     <Label Text="Game Menu" TextColor="#111111" FontSize="Large" HorizontalTextAlignment="Center"></Label>
     <Button Margin="0,5,0,5"
             Command="{Binding SimulateCommand}"
-            Text="Simulate Sensor Upload" 
+            Text="Sensor Data Upload" 
             TextColor="#616161" 
             FontAttributes="Bold" 
             FontSize="16" 
             HorizontalOptions="FillAndExpand" 
-            BackgroundColor="#fdde54" />
+            BackgroundColor="{Binding FirstButtonColor, Converter={StaticResource StringToColorConverter}}" />
     <Frame BackgroundColor="#616161" 
            HasShadow="False">
       <Grid  RowSpacing="10" ColumnSpacing="10" 
@@ -56,7 +62,7 @@
             FontAttributes="Bold" 
             FontSize="16" 
             HorizontalOptions="FillAndExpand" 
-            BackgroundColor="#fdde54" />
+            BackgroundColor="{Binding SecondButtonColor, Converter={StaticResource StringToColorConverter}}" />
     <Image HorizontalOptions="Center" WidthRequest="400" Source="chart.png"/>
     <Frame BackgroundColor="#616161" 
          HasShadow="False">
@@ -87,7 +93,7 @@
             FontAttributes="Bold" 
             FontSize="16" 
             HorizontalOptions="FillAndExpand" 
-            BackgroundColor="#fdde54" />
+            BackgroundColor="{Binding ThirdButtonColor, Converter={StaticResource StringToColorConverter}}" />
   </StackLayout>
     <StackLayout IsVisible="{Binding IsBusy}" 
                  AbsoluteLayout.LayoutFlags="All"

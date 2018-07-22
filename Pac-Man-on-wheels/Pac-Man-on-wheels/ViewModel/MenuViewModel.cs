@@ -33,6 +33,12 @@
 
     private string loadingText = "PoW in progress...";
 
+    private string firstButtonColor = "#fdde54";
+
+    private string secondButtonColor = "#fdde54";
+
+    private string thirdButtonColor = "#fdde54";
+
     public MenuViewModel(User user)
     {
       this.user = user;
@@ -71,6 +77,36 @@
       }
     }
 
+    public string FirstButtonColor
+    {
+      get => this.firstButtonColor ?? string.Empty;
+      set
+      {
+        this.firstButtonColor = value;
+        this.RaisePropertyChanged();
+      }
+    }
+
+    public string SecondButtonColor
+    {
+      get => this.secondButtonColor ?? string.Empty;
+      set
+      {
+        this.secondButtonColor = value;
+        this.RaisePropertyChanged();
+      }
+    }
+
+    public string ThirdButtonColor
+    {
+      get => this.thirdButtonColor ?? string.Empty;
+      set
+      {
+        this.thirdButtonColor = value;
+        this.RaisePropertyChanged();
+      }
+    }
+
     public ICommand RefreshCommand => new Command(async () => { await this.Refresh(); });
 
     public ICommand SimulateCommand => new Command(async () => { await this.Simulate(); });
@@ -79,6 +115,7 @@
 
     private async Task Refresh()
     {
+      
       this.LoadingText = "Loading data...";
       this.IsBusy = true;
 
@@ -99,13 +136,14 @@
         this.Distance = carDataJson.trip.distance + " m";
       }
 
+      this.SecondButtonColor = "#9ccc65";
       this.IsBusy = false;
     }
 
     private async Task Simulate()
     {
       this.IsBusy = true;
-      
+
       // 1. Upload ipfs
       // var hash = await this.ipfsHelper.PinFile("path to file");
 
@@ -117,12 +155,15 @@
       // 3. Send to Tangle
       await this.tangle.SendMessageAsync(new TryteString(tryteString + MarkerConstants.End), this.user.DataAddress);
       Trace.WriteLine("Data Address: " + this.user.DataAddress);
+
+      this.FirstButtonColor = "#9ccc65";
       this.IsBusy = false;
     }
 
     private async Task Offer()
     {
       this.Earnings = "0,07 Mi (0,06 €)";
+      this.ThirdButtonColor = "#9ccc65";
     }
   }
 }
