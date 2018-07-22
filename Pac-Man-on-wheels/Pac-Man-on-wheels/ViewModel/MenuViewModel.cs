@@ -13,6 +13,8 @@
   using Pac_Man_on_wheels.NTRU;
   using Pac_Man_on_wheels.Services;
 
+  using StandardStorage;
+
   using Tangle.Net.Entity;
 
   using Xamarin.Forms;
@@ -31,7 +33,7 @@
 
     private string distance = "0 m"; // "500 km"
 
-    private string loadingText = "PoW in progress...";
+    private string loadingText = "Ipfs upload + PoW in progress...";
 
     private string firstButtonColor = "#fdde54";
 
@@ -107,15 +109,38 @@
       }
     }
 
-    public ICommand RefreshCommand => new Command(async () => { await this.Refresh(); });
-
     public ICommand SimulateCommand => new Command(async () => { await this.Simulate(); });
 
-    public ICommand OfferCommand => new Command(async () => { await this.Offer(); });
+    public ICommand RefreshCommand => new Command(async () => { await this.Refresh(); });
+
+    public ICommand OfferCommand => new Command(this.Offer);
+
+    private async Task Simulate()
+    {
+      this.IsBusy = true;
+
+      // 1. Upload ipfs
+      // File needs to be stored in local Folder!!!
+      var rootFolder = FileSystem.Current.LocalStorage;
+      var jsonFile = await rootFolder.GetFileAsync("trip.json");
+      var hash = await this.ipfsHelper.PinFile(jsonFile.Path);
+
+      // 2. Encrypt
+      // Hash should be "QmRySnruZvL3LYVw1D329tAvyE2dQbMabrvwKFjM7Pctba"
+      var encrypted = this.ntru.Encrypt(this.user.NtruKeyPair.PublicKey, Encoding.UTF8.GetBytes(hash)); 
+      var tryteString = encrypted.EncodeBytesAsTryteString();
+      Trace.WriteLine("IPFS: " + hash);
+
+      // 3. Send to Tangle
+      await this.tangle.SendMessageAsync(new TryteString(tryteString + MarkerConstants.End), this.user.DataAddress);
+      Trace.WriteLine("Data Address: " + this.user.DataAddress);
+
+      this.FirstButtonColor = "#9ccc65";
+      this.IsBusy = false;
+    }
 
     private async Task Refresh()
     {
-      
       this.LoadingText = "Loading data...";
       this.IsBusy = true;
 
@@ -140,27 +165,7 @@
       this.IsBusy = false;
     }
 
-    private async Task Simulate()
-    {
-      this.IsBusy = true;
-
-      // 1. Upload ipfs
-      // var hash = await this.ipfsHelper.PinFile("path to file");
-
-      // 2. Encrypt
-      var encrypted = this.ntru.Encrypt(this.user.NtruKeyPair.PublicKey, Encoding.UTF8.GetBytes("QmRySnruZvL3LYVw1D329tAvyE2dQbMabrvwKFjM7Pctba"));
-      var tryteString = encrypted.EncodeBytesAsTryteString();
-      Trace.WriteLine("IPFS: QmRySnruZvL3LYVw1D329tAvyE2dQbMabrvwKFjM7Pctba");
-
-      // 3. Send to Tangle
-      await this.tangle.SendMessageAsync(new TryteString(tryteString + MarkerConstants.End), this.user.DataAddress);
-      Trace.WriteLine("Data Address: " + this.user.DataAddress);
-
-      this.FirstButtonColor = "#9ccc65";
-      this.IsBusy = false;
-    }
-
-    private async Task Offer()
+    private void Offer()
     {
       this.Earnings = "0,07 Mi (0,06 €)";
       this.ThirdButtonColor = "#9ccc65";
