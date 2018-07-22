@@ -6,6 +6,7 @@
   using System.Windows.Input;
 
   using Pac_Man_on_wheels.Models;
+  using Pac_Man_on_wheels.NTRU;
 
   using Tangle.Net.Cryptography;
   using Tangle.Net.Entity;
@@ -65,10 +66,12 @@
         var addresses = await Task.Run(() => new AddressGenerator().GetAddresses(this.user.Seed, SecurityLevel.Medium, 0, 2));
         this.user.MoneyAddress = addresses[0].Value;
         this.user.DataAddress = addresses[1].Value;
-        
+
+        this.user.NtruKeyPair = new NtruKex().CreateAsymmetricKeyPair(this.user.Seed.Value, this.user.MoneyAddress); // could be any other address
+
         // Just for testing and reading out the addresses
-        Trace.WriteLine(this.user.MoneyAddress);
         Trace.WriteLine(this.user.DataAddress);
+
         await this.Navigation.PushAsync(new MenuPage(this.user));
       }
 

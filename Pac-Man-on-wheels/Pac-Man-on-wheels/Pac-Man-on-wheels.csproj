@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CEXEngine\CEXEngine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Views\MenuPage.xaml.cs">
       <DependentUpon>MenuPage.xaml</DependentUpon>
     </Compile>

@@ -10,6 +10,14 @@
                AbsoluteLayout.LayoutFlags="All" 
                AbsoluteLayout.LayoutBounds="0,0,1,1">
     <Label Text="Overview" TextColor="#111111" FontSize="Large" HorizontalTextAlignment="Center"></Label>
+    <Button Margin="0,5,0,5"
+            Command="{Binding SimulateCommand}"
+            Text="Simulate Sensor Upload" 
+            TextColor="#616161" 
+            FontAttributes="Bold" 
+            FontSize="16" 
+            HorizontalOptions="FillAndExpand" 
+            BackgroundColor="#fdde54" />
     <Frame BackgroundColor="#616161" 
            HasShadow="False">
       <Grid  RowSpacing="10" ColumnSpacing="10" 
@@ -73,14 +81,13 @@
       </Grid>
     </Frame>
     <Button Margin="0,5,0,0"
-            Command="{Binding SaveCommand}"
-            Text="Offer your data" 
+            Command="{Binding OfferCommand}"
+            Text="Sell data" 
             TextColor="#616161" 
             FontAttributes="Bold" 
             FontSize="16" 
             HorizontalOptions="FillAndExpand" 
             BackgroundColor="#fdde54" />
-
   </StackLayout>
     <StackLayout IsVisible="{Binding IsBusy}" 
                  AbsoluteLayout.LayoutFlags="All"
@@ -92,7 +99,7 @@
                    Padding="30,25,30,25">
         <ActivityIndicator IsRunning="{Binding IsBusy}"
                            Color ="#fdde54"/>
-        <Label Text="Loading data..." 
+        <Label Text="{Binding LoadingText}" 
                AutomationId="AddressLabelId"
                FontSize="16" 
                TextColor="Black"/>
