@@ -19,10 +19,10 @@
       return await this.ipfs.FileSystem.ReadAllTextAsync(qmName);
     }
 
-    public async Task<string> PinString(string input)
+    public async Task<string> PinFile(string path)
     {
       var addFileOptions = new AddFileOptions { Pin = true };
-      var test = await this.ipfs.FileSystem.AddTextAsync(input, addFileOptions);
+      var test = await this.ipfs.FileSystem.AddFileAsync(path, addFileOptions);
       return test.Id.Hash.ToString();
     }
   }

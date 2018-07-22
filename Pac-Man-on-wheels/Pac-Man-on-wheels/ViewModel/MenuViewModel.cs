@@ -105,9 +105,18 @@
     private async Task Simulate()
     {
       this.IsBusy = true;
-      var test = this.ntru.Encrypt(this.user.NtruKeyPair.PublicKey, Encoding.UTF8.GetBytes("QmRySnruZvL3LYVw1D329tAvyE2dQbMabrvwKFjM7Pctba"));
-      var tryteString = test.EncodeBytesAsTryteString();
+      
+      // 1. Upload ipfs
+      // var hash = await this.ipfsHelper.PinFile("path to file");
+
+      // 2. Encrypt
+      var encrypted = this.ntru.Encrypt(this.user.NtruKeyPair.PublicKey, Encoding.UTF8.GetBytes("QmRySnruZvL3LYVw1D329tAvyE2dQbMabrvwKFjM7Pctba"));
+      var tryteString = encrypted.EncodeBytesAsTryteString();
+      Trace.WriteLine("IPFS: QmRySnruZvL3LYVw1D329tAvyE2dQbMabrvwKFjM7Pctba");
+
+      // 3. Send to Tangle
       await this.tangle.SendMessageAsync(new TryteString(tryteString + MarkerConstants.End), this.user.DataAddress);
+      Trace.WriteLine("Data Address: " + this.user.DataAddress);
       this.IsBusy = false;
     }
 
