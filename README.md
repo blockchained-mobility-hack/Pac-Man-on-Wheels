@@ -1,8 +1,13 @@
 # Pac-Man-on-Wheels
 Earn while you Drive &amp; Empower Automated Driving
+Team:
+Dr. Simon Hassannia (presented first half of final pitch)
+David Hawig (presented second half of final pitch)
+Martin Mihaylov
+Michael Karl  
 
 # Git Team Leader Contact Details
-Michael Karl
+Michael Karl 
 +49 1577 157 1679
 
 # Used Platform
